@@ -15,11 +15,11 @@ namespace StockApp.API.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet(Name ="GetCategories")]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> Get() 
+        [HttpGet(Name = "GetCategories")]
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> Get()
         {
             var categories = await _categoryService.GetCategories();
-            if(categories== null)
+            if (categories == null)
             {
                 return NotFound("Categories not found");
             }
@@ -29,33 +29,33 @@ namespace StockApp.API.Controllers
         public async Task<ActionResult<CategoryDTO>> Get(int id)
         {
             var category = await _categoryService.GetCategoryById(id);
-            if(category== null)
+            if (category == null)
             {
                 return NotFound("Category not Found");
             }
             return Ok(category);
         }
-        [HttpPost(Name ="Create Category")]
+        [HttpPost(Name = "Create Category")]
         public async Task<ActionResult> Post([FromBody] CategoryDTO categoryDTO)
         {
-            if(categoryDTO == null)
+            if (categoryDTO == null)
             {
                 return BadRequest("Invalid Data");
             }
             await _categoryService.Add(categoryDTO);
 
-            return new CreatedAtRouteResult("GetCategory", 
+            return new CreatedAtRouteResult("GetCategory",
                 new { id = categoryDTO.Id }, categoryDTO);
         }
 
-        [HttpPut(Name ="Update Category")]
+        [HttpPut(Name = "Update Category")]
         public async Task<ActionResult> Put(int id, [FromBody] CategoryDTO categoryDTO)
         {
-            if(id != categoryDTO.Id)
+            if (id != categoryDTO.Id)
             {
                 return BadRequest("Inconsisted Id");
             }
-            if(categoryDTO == null)
+            if (categoryDTO == null)
             {
                 return BadRequest("Update Data Invalid");
             }
@@ -65,11 +65,11 @@ namespace StockApp.API.Controllers
             return Ok(categoryDTO);
         }
 
-        [HttpDelete("{id:int}", Name ="Delete Category")]
+        [HttpDelete("{id:int}", Name = "Delete Category")]
         public async Task<ActionResult<CategoryDTO>> Detele(int id)
         {
             var category = await _categoryService.GetCategoryById(id);
-            if(category == null) 
+            if (category == null)
             {
                 return NotFound("Category not found");
             }
