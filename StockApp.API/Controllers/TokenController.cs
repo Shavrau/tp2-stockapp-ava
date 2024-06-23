@@ -1,37 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
-using System.Threading.Tasks;
 
-namespace StockApp.API.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class TokenController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class TokenController : ControllerBase
+    private readonly IAuthService _authService;
+
+    public TokenController(IAuthService authService)
     {
-        private readonly IAuthService _authService;
+        _authService = authService;
+    }
 
-        public TokenController(IAuthService authService)
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginDTO)
+    {
+        if (string.IsNullOrEmpty(userLoginDTO.Username) || string.IsNullOrEmpty(userLoginDTO.Password))
         {
-            _authService = authService;
+            return BadRequest();
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserLoginDTO userLoginDTO)
+        var token = await _authService.AuthenticateAsync(userLoginDTO.Username, userLoginDTO.Password);
+
+        if (token == null)
         {
-            if (string.IsNullOrEmpty(userLoginDTO.Username) || string.IsNullOrEmpty(userLoginDTO.Password))
-            {
-                return BadRequest();
-            }
-
-            var token = await _authService.AuthenticateAsync(userLoginDTO.Username, userLoginDTO.Password);
-
-            if (token == null)
-            {
-                return Unauthorized();
-            }
-
-            return Ok(token);
+            return Unauthorized();
         }
+
+        return Ok(token);
     }
 }

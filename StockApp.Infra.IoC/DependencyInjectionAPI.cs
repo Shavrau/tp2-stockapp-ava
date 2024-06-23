@@ -22,13 +22,18 @@ public static class DependencyInjectionAPI
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<ISupplierService, SupplierService>();
+        services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IReviewService, ReviewService>();
         services.AddScoped<IPromotionRepository, PromotionRepository>();
         services.AddScoped<IPromotionService, PromotionService>();
-        services.AddScoped<IPricingService, PricingService>();
+        services.AddSingleton<IMarketTrendAnalysisService, MarketTrendAnalysisService>();
+        services.AddHttpClient<IPricingService, PricingService>(client =>
+        {
+            client.BaseAddress = new Uri("https://api.pricing.com/");
+        });
+
 
         services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 

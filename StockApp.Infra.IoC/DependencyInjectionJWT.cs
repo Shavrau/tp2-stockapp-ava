@@ -8,7 +8,6 @@ public static class DependencyInjectionJWT
 {
     public static void AddInfrastructureJWT(this IServiceCollection services, IConfiguration configuration)
     {
-        // Configuração do JWT
         services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

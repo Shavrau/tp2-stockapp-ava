@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOs;
 using StockApp.Application.Interfaces;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace StockApp.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "adminPolicy")] 
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
         {
             var categories = await _categoryService.GetCategoriesAsync();
@@ -25,6 +27,7 @@ namespace StockApp.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "adminPolicy")] 
         public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
             var category = await _categoryService.GetCategoryByIdAsync(id);
@@ -36,6 +39,7 @@ namespace StockApp.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "supplierPolicy")] 
         public async Task<ActionResult> AddCategory([FromBody] CategoryDTO categoryDto)
         {
             await _categoryService.AddCategoryAsync(categoryDto);
@@ -43,6 +47,7 @@ namespace StockApp.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "supplierPolicy")]
         public async Task<ActionResult> UpdateCategory(int id, [FromBody] CategoryDTO categoryDto)
         {
             if (id != categoryDto.Id)
@@ -54,6 +59,7 @@ namespace StockApp.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "adminPolicy")]
         public async Task<ActionResult> DeleteCategory(int id)
         {
             await _categoryService.DeleteCategoryAsync(id);
