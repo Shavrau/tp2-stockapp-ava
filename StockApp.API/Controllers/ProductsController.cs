@@ -35,7 +35,7 @@ namespace StockApp.API.Controllers
             _reviewRepository = reviewRepository ?? throw new ArgumentNullException(nameof(reviewRepository));
             _pricingService = pricingService ?? throw new ArgumentNullException(nameof(pricingService));
         }
-
+        
         [HttpGet(Name = "GetProducts")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> Get()
         {
@@ -357,6 +357,16 @@ namespace StockApp.API.Controllers
             {
                 return StatusCode(500, $"Error retrieving sales report: {ex.Message}");
             }
+        }
+
+        [HttpGet("products-search")]
+        public async Task<ActionResult<IEnumerable<Product>>> Search(
+            [FromQuery] string name,
+            [FromQuery] decimal? minPrice,
+            [FromQuery] decimal? maxPrice)
+        {
+            var products = await _productRepository.SearchAsync(name, minPrice, maxPrice);
+            return Ok(products);
         }
     }
 }
