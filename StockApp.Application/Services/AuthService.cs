@@ -1,7 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using StockApp.Application.DTOs;
-using StockApp.Application.Interfaces;
-using StockApp.Domain.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,8 +6,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Serilog.AspNetCore;
-using StockApp.Domain.Validation;
+using StockApp.Domain.Entities;
+using StockApp.Domain.Interfaces;
+using StockApp.Application.DTOs;
+using System.Security.Authentication;
+using StockApp.Application.Interfaces;
 
 namespace StockApp.Application.Services
 {
@@ -62,7 +62,8 @@ namespace StockApp.Application.Services
 
                 return new TokenResponseDTO
                 {
-                    Token = tokenHandler.WriteToken(token)
+                    Token = tokenHandler.WriteToken(token),
+                    Expiration = token.ValidTo 
                 };
             }
             catch (Exception ex)
