@@ -37,7 +37,7 @@ namespace StockApp.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -71,7 +71,7 @@ namespace StockApp.Infra.Data.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("StockApp.Domain.Entities.Product", b =>
@@ -111,7 +111,7 @@ namespace StockApp.Infra.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("StockApp.Domain.Entities.Promotion", b =>
@@ -146,7 +146,7 @@ namespace StockApp.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Promotions");
+                    b.ToTable("Promotions", (string)null);
                 });
 
             modelBuilder.Entity("StockApp.Domain.Entities.Review", b =>
@@ -179,7 +179,7 @@ namespace StockApp.Infra.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("StockApp.Domain.Entities.Supplier", b =>
@@ -250,7 +250,7 @@ namespace StockApp.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new

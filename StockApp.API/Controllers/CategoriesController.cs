@@ -19,7 +19,6 @@ namespace StockApp.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "adminPolicy")] 
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
         {
             var categories = await _categoryService.GetCategoriesAsync();
@@ -27,7 +26,6 @@ namespace StockApp.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = "adminPolicy")] 
         public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
             var category = await _categoryService.GetCategoryByIdAsync(id);

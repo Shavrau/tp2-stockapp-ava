@@ -1,15 +1,12 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System;
-using System.Security.Claims;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 using StockApp.Application.Interfaces;
 using StockApp.Application.Services;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +77,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+
 app.UseRouting();
 
 app.UseCors("AllowAll");
@@ -103,3 +101,5 @@ finally
 {
     Log.CloseAndFlush();
 }
+
+public partial class Program { }

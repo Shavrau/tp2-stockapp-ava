@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using StockApp.API;
@@ -40,7 +41,7 @@ namespace StockApp.IntegrationTests
             {
                 Username = "testuser",
                 Password = "password",
-                Role = "User" 
+                Role = "User"
             };
 
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenResponse.Token);
@@ -51,17 +52,33 @@ namespace StockApp.IntegrationTests
         }
 
         [Fact]
-        public async Task Login_InvalidCredentials_ReturnsUnauthorized()
+        public async Task Register_WithNonAdminUser_ReturnsUnauthorized()
         {
-            var userLoginDto = new UserLoginDTO
+            var nonAdminLoginDto = new UserLoginDTO
             {
-                Username = "invaliduser",
-                Password = "invalidpassword"
+                Username = "string97",
+                Password = "string"
             };
 
-            var loginResponse = await _client.PostAsJsonAsync("/api/token/login", userLoginDto);
+            var loginResponse = await _client.PostAsJsonAsync("/api/token/login", nonAdminLoginDto);
+            loginResponse.EnsureSuccessStatusCode();
 
-            Assert.Equal(HttpStatusCode.Unauthorized, loginResponse.StatusCode);
+            var tokenResponse = await loginResponse.Content.ReadFromJsonAsync<TokenResponseDTO>();
+            Assert.NotNull(tokenResponse);
+            Assert.NotNull(tokenResponse.Token);
+
+            var userRegisterDto = new UserRegisterDTO
+            {
+                Username = "newuser",
+                Password = "newpassword",
+                Role = "User"
+            };
+
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenResponse.Token);
+            var registerResponse = await _client.PostAsJsonAsync("/api/users/register", userRegisterDto);
+
+            Assert.Equal(HttpStatusCode.Forbidden, registerResponse.StatusCode);
         }
+
     }
 }
